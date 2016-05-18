@@ -1,0 +1,19 @@
+{
+    "name": "kaliop/ezpublish5universalinstaller",
+    "description": "The eZ5 Universal Installer toolset",
+    "require": {
+        "symfony/console": "*",
+        "symfony/filesystem": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kaliop\\eZP5UI\\": "src"
+        }
+    },
+    "require": {
+        "symfony/yaml": "*"
+    },
+    "bin": [
+        "ezp5installer.php"
+    ]
+}
