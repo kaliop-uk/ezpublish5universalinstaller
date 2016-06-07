@@ -1,6 +1,7 @@
 {
     "name": "kaliop/ezpublish5universalinstaller",
     "description": "The eZ5 Universal Installer toolset",
+    "license": "GPL-2.0",
     "require": {
         "symfony/console": "*",
         "symfony/filesystem": "*"
