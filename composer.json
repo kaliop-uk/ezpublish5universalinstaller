@@ -11,7 +11,8 @@
         }
     },
     "require": {
-        "symfony/yaml": "*"
+        "symfony/yaml": "*",
+        "symfony/filesystem": "*"
     },
     "bin": [
         "ezp5installer.php"

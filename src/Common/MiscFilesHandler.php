@@ -29,6 +29,10 @@ class MiscFilesHandler extends Handler
             throw new \Exception("Source dir '$sourceDir' is not a directory");
         }
 
+        if (strpos(realpath($targetDir), realpath($sourceDir)) === 0) {
+            throw new \Exception("Inception! Target dir '$targetDir' is subdir of source dir '$sourceDir'");
+        }
+
         $this->sourceDir = $sourceDir;
         $this->targetDir = $targetDir;
 
@@ -54,7 +58,7 @@ class MiscFilesHandler extends Handler
 
                 if ( !$it->isDot() ) {
 
-                    $source = realpath($this->targetDir . '/' . $sourceDir . $it->getSubPathName());
+                    $source = realpath($sourceDir . $it->getSubPathName());
                     $target = $this->targetDir . '/' . $it->getSubPathName();
                     $this->writeln("Symlinking '$source' to '$target'");
 

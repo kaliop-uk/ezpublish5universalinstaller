@@ -69,7 +69,7 @@ Feature: managing per-environment configuration (apache, solr, etc)
 * This makes it possible to keep files like .htaccess in the project, with one version per env or one global version,
     and deploy them to a target dir (inside the eZP root dir or even outside of it)
 
-* Using a similar subdirectory structure as legacy settings; the default dir for stroing the files is 'ezpublish/misc_files'
+* Using a similar subdirectory structure as legacy settings; the default dir for storing the files is 'ezpublish/misc_files'
 
 * The command to deploy the files is:
 
