@@ -18,6 +18,7 @@ class GetConfig extends Command
             ->setDescription('Returns a configuration value')
             ->addOption('key', null, InputOption::VALUE_REQUIRED, 'The yaml config key desired')
             ->addOption('file', null, InputOption::VALUE_REQUIRED, 'The config file storing the key', 'ezpublish/config/ezpublish_{ENV}.yml')
+            ->addOption('delimiter', null, InputOption::VALUE_REQUIRED, 'If the yml config key has dots in its name, use an alternative character in the key', '.')
         ;
     }
 
@@ -28,7 +29,7 @@ class GetConfig extends Command
         }
 
         $handler = new ConfigHandler($output);
-        $value = $handler->get($env, $input->getOption('key'), $input->getOption('file'));
+        $value = $handler->get($env, $input->getOption('key'), $input->getOption('file'), $input->getOption('delimiter'));
         if (is_string($value)) {
             $output->write($value);
         } else {
