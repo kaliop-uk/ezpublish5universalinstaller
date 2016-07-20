@@ -14,10 +14,20 @@ class VarnishHandler extends YamlParsingHandler
         $this->setOutputInterface($outputInterface);
     }
 
+    /**
+     * NB: assumes the standard eZPublish vcl by default
+     *
+     * @param string $env
+     * @param string $yamlKey
+     * @param string $yamlFile
+     * @param string $banHeader
+     * @throws \Exception
+     */
     public function purge(
         $env,
         $yamlKey = 'ezpublish.system.default.http_cache.purge_servers',
-        $yamlFile = 'ezpublish/config/ezpublish_{ENV}.yml'
+        $yamlFile = 'ezpublish/config/ezpublish_{ENV}.yml',
+        $banHeader = "X-Match: .*"
     )
     {
         $configFile = str_replace(array('{ENV}'), array($env), $yamlFile);
@@ -31,7 +41,7 @@ class VarnishHandler extends YamlParsingHandler
 
             $curl = curl_init($server);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "BAN");
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array("X-Location-Id: *"));
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array($banHeader));
 
             curl_exec($curl);
 
