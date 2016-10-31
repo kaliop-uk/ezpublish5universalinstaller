@@ -15,6 +15,14 @@ class MemcacheHandler extends YamlParsingHandler
         $this->setOutputInterface($outputInterface);
     }
 
+    /**
+     * Purges the memcache server by looking up its address in eZ5 config files
+     *
+     * @param string $env
+     * @param string $yamlKey
+     * @param string $yamlFile
+     * @throws \Exception
+     */
     public function purge(
         $env,
         $yamlKey = 'stash.caches.default.Memcache.servers',
@@ -37,15 +45,20 @@ class MemcacheHandler extends YamlParsingHandler
             $serverName = $server['server'];
             $serverPort = isset($server['port']) ? $server['port'] : 11211;
 
-            $memcache_obj = new Memcached;
-            $memcache_obj->addserver($serverName, $serverPort);
-            $ok = $memcache_obj->flush();
+            $this->purgeInner($serverName, $serverPort);
+        }
+    }
 
-            if ($ok) {
-                $this->writeln("Memcache server '$serverName:$serverPort' flushed");
-            } else {
-                throw new \Exception("Flush of memcache server '$serverName:$serverPort' failed!");
-            }
+    public function purgeServer($serverName, $serverPort)
+    {
+        $memcache_obj = new Memcached;
+        $memcache_obj->addserver($serverName, $serverPort);
+        $ok = $memcache_obj->flush();
+
+        if ($ok) {
+            $this->writeln("Memcache server '$serverName:$serverPort' flushed");
+        } else {
+            throw new \Exception("Flush of memcache server '$serverName:$serverPort' failed!");
         }
     }
 }

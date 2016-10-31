@@ -37,21 +37,25 @@ class VarnishHandler extends YamlParsingHandler
             throw new \Exception("Yaml config '$yamlKey' in file '$configFile' is not an array");
         }
 
-        foreach ($servers as $server) {
-
-            $curl = curl_init($server);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "BAN");
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array($banHeader));
-
-            curl_exec($curl);
-
-            // depending on how varnish is set up, we might get different responses. So do not trigger exceptions
-
-            /*if ($ok) {
-                $this->writeln("Varnish server '$server' flushed");
-            } else {
-                throw new \Exception("Flush of varnishserver '$server' failed!");
-            }*/
+        foreach ($servers as $url) {
+            $this->purgeServer($url, $banHeader);
         }
+    }
+
+    public function purgeServer($url, $banHeader = "X-Match: .*")
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "BAN");
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array($banHeader));
+
+        curl_exec($curl);
+
+        // depending on how varnish is set up, we might get different responses. So do not trigger exceptions
+
+        /*if ($ok) {
+            $this->writeln("Varnish server '$server' flushed");
+        } else {
+            throw new \Exception("Flush of varnishserver '$server' failed!");
+        }*/
     }
 }
