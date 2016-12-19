@@ -18,8 +18,8 @@ class InstallMiscFiles extends Command
             ->setDescription('Deploys miscellaneous files via symlink or plain copy. Will place files in the same location from root dir.')
             ->addArgument('source-dir', InputArgument::OPTIONAL, 'The source directory', 'ezpublish/misc_files')
             ->addArgument('target-dir', InputArgument::OPTIONAL, 'The target directory for installation', getcwd())
-            ->addOption('overwrite', 'o', InputOption::VALUE_NONE, 'If set, existing files colliding with symlinks will be removed before symlink is made.')
-            ->addOption('relative', 'r', InputOption::VALUE_NONE, 'If set, the symlink will be relative.')
+            ->addOption('overwrite', 'o', InputOption::VALUE_NONE, 'If set, existing files colliding with symlinks will be removed before the symlink is made')
+            ->addOption('relative', 'r', InputOption::VALUE_NONE, 'If set, the symlinks will use relative paths')
         ;
     }
 
