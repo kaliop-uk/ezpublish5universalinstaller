@@ -39,7 +39,7 @@ class MiscFilesHandler extends Handler
         $this->setOutputInterface($outputInterface);
     }
 
-    public function install($env, $doOverwrite = false)
+    public function install($env, $doOverwrite = false, $relative = false)
     {
         $fs = new Filesystem();
 
@@ -60,6 +60,13 @@ class MiscFilesHandler extends Handler
 
                     $source = realpath($sourceDir . $it->getSubPathName());
                     $target = $this->targetDir . '/' . $it->getSubPathName();
+
+                    if ($relative) {
+                        $relativeDir = $fs->makePathRelative(dirname($source), dirname($target));
+                        $basename = basename($it->getSubPathName());
+                        $source = $relativeDir . $basename;
+                    }
+
                     $this->writeln("Symlinking '$source' to '$target'");
 
                     $fs->atomicSymlink($source, $target, true, $doOverwrite);

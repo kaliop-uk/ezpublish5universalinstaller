@@ -19,6 +19,7 @@ class InstallMiscFiles extends Command
             ->addArgument('source-dir', InputArgument::OPTIONAL, 'The source directory', 'ezpublish/misc_files')
             ->addArgument('target-dir', InputArgument::OPTIONAL, 'The target directory for installation', getcwd())
             ->addOption('overwrite', 'o', InputOption::VALUE_NONE, 'If set, existing files colliding with symlinks will be removed before symlink is made.')
+            ->addOption('relative', 'r', InputOption::VALUE_NONE, 'If set, the symlink will be relative.')
         ;
     }
 
@@ -29,6 +30,6 @@ class InstallMiscFiles extends Command
         }
 
         $handler = new MiscFilesHandler($input->getArgument('source-dir'), $input->getArgument('target-dir'), $output);
-        $handler->install($env, $input->getOption('overwrite'));
+        $handler->install($env, $input->getOption('overwrite'), $input->getOption('relative'));
     }
 }
