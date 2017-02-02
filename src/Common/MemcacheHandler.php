@@ -45,7 +45,7 @@ class MemcacheHandler extends YamlParsingHandler
             $serverName = $server['server'];
             $serverPort = isset($server['port']) ? $server['port'] : 11211;
 
-            $this->purgeInner($serverName, $serverPort);
+            $this->purgeServer($serverName, $serverPort);
         }
     }
 
