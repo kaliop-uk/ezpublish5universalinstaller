@@ -12,6 +12,9 @@ class YamlParsingHandler extends Handler
     protected function parseFile($fileName)
     {
         $yaml = new Parser();
+        if (!is_file($fileName)) {
+            throw new \Exception("Can not find file '$fileName'");
+        }
         return $yaml->parse(file_get_contents($fileName));
     }
 
