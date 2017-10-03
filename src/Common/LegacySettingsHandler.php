@@ -36,7 +36,7 @@ class LegacySettingsHandler extends Handler
         $this->setOutputInterface($outputInterface);
     }
 
-    public function install($env, $doCleanup = false)
+    public function install($env, $doCleanup = false, $relative = false)
     {
 
         if ($doCleanup) {
@@ -48,11 +48,11 @@ class LegacySettingsHandler extends Handler
             $baseDir = $this->baseDir . '/' . $env;
 
             if (is_dir($baseDir . '/override')) {
-                $this->symLinkSettingsInDir($baseDir . '/override', 'override');
+                $this->symLinkSettingsInDir($baseDir . '/override', 'override', false, $relative);
             }
 
             foreach(glob($baseDir . '/siteaccess/*',  GLOB_ONLYDIR) as $siteaccess) {
-                $this->symLinkSettingsInDir($siteaccess, 'siteaccess');
+                $this->symLinkSettingsInDir($siteaccess, 'siteaccess', false, $relative);
             }
         }
     }
@@ -69,11 +69,13 @@ class LegacySettingsHandler extends Handler
     /**
      * @param string $dir
      * @param string $type 'override' or other
+     * @param bool $doOverwrite
+     * @param bool $relative
      * @throws IOException
      *
      * @todo check if this works in case the target exists and is not a symlink
      */
-    protected function symLinkSettingsInDir($dir, $type)
+    protected function symLinkSettingsInDir($dir, $type, $doOverwrite = false, $relative = false)
     {
         $fs = new Filesystem();
 
@@ -94,9 +96,15 @@ class LegacySettingsHandler extends Handler
 
             $source = realpath($file);
 
+            if ($relative) {
+                $relativeDir = $fs->makePathRelative(dirname($source), dirname($target));
+                $basename = basename($source);
+                $source = $relativeDir . $basename;
+            }
+
             $this->writeln("Symlinking '$source' to '$target'");
 
-            $fs->atomicSymlink($source, $target, true);
+            $fs->atomicSymlink($source, $target, true, $doOverwrite);
         }
     }
 }

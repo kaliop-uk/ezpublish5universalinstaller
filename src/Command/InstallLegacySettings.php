@@ -19,6 +19,7 @@ class InstallLegacySettings extends Command
             ->addArgument('source-dir', InputArgument::OPTIONAL, 'The source directory', 'ezpublish/legacy_settings')
             ->addArgument('target-dir', InputArgument::OPTIONAL, 'The target directory', 'ezpublish_legacy/settings')
             ->addOption('clean', null, InputOption::VALUE_NONE, 'If set, all existing legacy settings will be wiped before installing the new ones')
+            ->addOption('relative', 'r', InputOption::VALUE_NONE, 'If set, the symlinks will use relative paths')
         ;
     }
 
@@ -29,6 +30,6 @@ class InstallLegacySettings extends Command
         }
 
         $handler = new LegacySettingsHandler($input->getArgument('source-dir'), $input->getArgument('target-dir'), $output);
-        $handler->install($env, $input->getOption('clean'));
+        $handler->install($env, $input->getOption('clean'), $input->getOption('relative'));
     }
 }
