@@ -86,18 +86,14 @@ class LegacySettingsHandler extends Handler
                 $target = $this->targetDir . '/siteaccess/' . basename(dirname($file)) . '/' . basename($file);
             }
 
-            // this is all handled by $fs->atomicSymlink()...
-            /*if(!is_dir(dirname($target))) {
-                $fs->mkdir(dirname($target));
-            } else if(is_file($target)) {
-                $this->info("Removing file: '$file'");
-                $fs->remove($target);
-            }*/
-
             $source = realpath($file);
 
             if ($relative) {
-                $relativeDir = $fs->makePathRelative(dirname($source), dirname($target));
+                // otherwise realpath call below might fail
+                if(!is_dir(dirname($target))) {
+                    $fs->mkdir(dirname($target));
+                }
+                $relativeDir = $fs->makePathRelative(dirname($source), realpath(dirname($target)));
                 $basename = basename($source);
                 $source = $relativeDir . $basename;
             }
