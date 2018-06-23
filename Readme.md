@@ -199,3 +199,7 @@ To Do
   (same with binary files)
 
 * instead of relying on composer autoload for the yml parser, copy it inside this project
+
+[![License](https://poser.pugx.org/kaliop/ezpublish5universalinstaller/license)](https://packagist.org/packages/kaliop/ezpublish5universalinstaller)
+[![Latest Stable Version](https://poser.pugx.org/kaliop/ezpublish5universalinstaller/v/stable)](https://packagist.org/packages/kaliop/ezpublish5universalinstaller)
+[![Total Downloads](https://poser.pugx.org/kaliop/ezpublish5universalinstaller/downloads)](https://packagist.org/packages/kaliop/ezpublish5universalinstaller)
