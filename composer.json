@@ -11,11 +11,13 @@
             "Kaliop\\eZP5UI\\": "src"
         }
     },
-    "require": {
-        "symfony/yaml": "*",
-        "symfony/filesystem": "*"
-    },
     "bin": [
         "ezp5installer.php"
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/tanoconsulting"
+        }
     ]
 }
