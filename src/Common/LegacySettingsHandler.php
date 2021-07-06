@@ -44,14 +44,14 @@ class LegacySettingsHandler extends Handler
         }
 
         // 'common' settings will be overtaken by per-env ones if they do exist
-        foreach(array('common', $env) as $env) {
+        foreach (array('common', $env) as $env) {
             $baseDir = $this->baseDir . '/' . $env;
 
             if (is_dir($baseDir . '/override')) {
                 $this->symLinkSettingsInDir($baseDir . '/override', 'override', false, $relative);
             }
 
-            foreach(glob($baseDir . '/siteaccess/*',  GLOB_ONLYDIR) as $siteaccess) {
+            foreach (glob($baseDir . '/siteaccess/*',  GLOB_ONLYDIR) as $siteaccess) {
                 $this->symLinkSettingsInDir($siteaccess, 'siteaccess', false, $relative);
             }
         }
@@ -79,7 +79,7 @@ class LegacySettingsHandler extends Handler
     {
         $fs = new Filesystem();
 
-        foreach(array_filter(glob($dir . '/*'), 'is_file') as $file) {
+        foreach (array_filter(glob($dir . '/*'), 'is_file') as $file) {
             if ($type == 'override') {
                 $target = $this->targetDir . '/override/' . basename($file);
             } else {
@@ -90,7 +90,7 @@ class LegacySettingsHandler extends Handler
 
             if ($relative) {
                 // otherwise realpath call below might fail
-                if(!is_dir(dirname($target))) {
+                if (!is_dir(dirname($target))) {
                     $fs->mkdir(dirname($target));
                 }
                 $relativeDir = $fs->makePathRelative(dirname($source), realpath(dirname($target)));

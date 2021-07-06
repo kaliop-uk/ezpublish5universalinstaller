@@ -44,7 +44,7 @@ class MiscFilesHandler extends Handler
         $fs = new Filesystem();
 
         // 'common' file will be overtaken by per-env ones if they do exist
-        foreach(array('common', $env) as $env) {
+        foreach (array('common', $env) as $env) {
             $sourceDir = $this->sourceDir . '/' . $env . '/';
 
             if (!is_dir($sourceDir)) {
@@ -54,15 +54,15 @@ class MiscFilesHandler extends Handler
             $it = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourceDir));
 
             $it->rewind();
-            while($it->valid()) {
+            while ($it->valid()) {
 
-                if ( !$it->isDot() ) {
+                if (!$it->isDot()) {
 
                     $source = realpath($sourceDir . $it->getSubPathName());
                     $target = $this->targetDir . '/' . $it->getSubPathName();
 
                     if ($relative) {
-                        $relativeDir = $fs->makePathRelative(dirname($source), dirname($target));
+                        $relativeDir = $fs->makePathRelative(dirname($source), realpath(dirname($target)));
                         $basename = basename($it->getSubPathName());
                         $source = $relativeDir . $basename;
                     }

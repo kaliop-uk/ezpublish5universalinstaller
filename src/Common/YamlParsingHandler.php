@@ -35,7 +35,7 @@ class YamlParsingHandler extends Handler
         }
         $values = $this->parseFile($fileName);
         $keyFound = array();
-        foreach(explode($delimiter, $key) as $part) {
+        foreach (explode($delimiter, $key) as $part) {
             if (!is_array($values) || !isset($values[$part])) {
                 throw new \Exception("Key '$key' not found in file '$fileName', prefix found: " . ( count($keyFound) ? implode($delimiter, $keyFound) : 'none' ));
             }
