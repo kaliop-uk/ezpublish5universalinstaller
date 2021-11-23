@@ -20,6 +20,7 @@ class InstallLegacySettings extends Command
             ->addArgument('target-dir', InputArgument::OPTIONAL, 'The target directory', 'ezpublish_legacy/settings')
             ->addOption('clean', null, InputOption::VALUE_NONE, 'If set, all existing legacy settings will be wiped before installing the new ones')
             ->addOption('relative', 'r', InputOption::VALUE_NONE, 'If set, the symlinks will use relative paths')
+            ->addOption('backup', 'b', InputOption::VALUE_NONE, 'If set, existing files colliding with symlinks will be renamed before the symlink is made')
         ;
     }
 
@@ -29,7 +30,11 @@ class InstallLegacySettings extends Command
             throw new \Exception('Can not install legacy settings: unknown environment!');
         }
 
+        if ($input->getOption('clean') && $input->getOption('backup')) {
+            throw new \Exception("It does not make sense to use options 'clean' and 'backup' together");
+        }
+
         $handler = new LegacySettingsHandler($input->getArgument('source-dir'), $input->getArgument('target-dir'), $output);
-        $handler->install($env, $input->getOption('clean'), $input->getOption('relative'));
+        $handler->install($env, $input->getOption('clean'), $input->getOption('relative'), $input->getOption('backup'));
     }
 }

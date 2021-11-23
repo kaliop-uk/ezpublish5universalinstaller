@@ -39,7 +39,7 @@ class MiscFilesHandler extends Handler
         $this->setOutputInterface($outputInterface);
     }
 
-    public function install($env, $doOverwrite = false, $relative = false)
+    public function install($env, $doOverwrite = false, $relative = false, $doBackup = false)
     {
         $fs = new Filesystem();
 
@@ -69,7 +69,7 @@ class MiscFilesHandler extends Handler
 
                     $this->writeln("Symlinking '$source' to '$target'");
 
-                    $fs->atomicSymlink($source, $target, true, $doOverwrite);
+                    $fs->atomicSymlink($source, $target, true, $doOverwrite, $doBackup);
                 }
 
                 $it->next();

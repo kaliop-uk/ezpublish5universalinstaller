@@ -15,13 +15,14 @@ class Filesystem extends BaseFilesystem
      *
      * @todo extend the atomicity also to the copyOnwindows case
      *
-     * @param $originDir existing dir/file
-     * @param $targetDir name of the symlink to create
+     * @param string $originDir existing dir/file
+     * @param string $targetDir name of the symlink to create
      * @param bool $copyOnWindows
      * @param bool $replaceFiles when true, existing target files will be replaced. By default, an existing target file
      *                           (not symlink) will abort the process
+     * @param bool $backupFiles when true, existing target files will be backed up if needed
      */
-    public function atomicSymlink($originDir, $targetDir, $copyOnWindows = false, $replaceFiles = false)
+    public function atomicSymlink($originDir, $targetDir, $copyOnWindows = false, $replaceFiles = false, $backupFiles = false)
     {
         if ('\\' === DIRECTORY_SEPARATOR && $copyOnWindows) {
             $this->mirror($originDir, $targetDir);
@@ -37,9 +38,15 @@ class Filesystem extends BaseFilesystem
             if (is_link($targetDir) && readlink($targetDir) == $originDir) {
                 $ok = true;
             } else {
-                $realTargetDir = $targetDir;
-                $targetDir = $targetDir . '.' . str_replace(' ', '_', microtime());
-                $toFinish = true;
+                if ($backupFiles) {
+                    if (!$this->backup($targetDir)) {
+                        throw new IOException(sprintf('Failed to back up file %s', $targetDir));
+                    }
+                } else {
+                    $realTargetDir = $targetDir;
+                    $targetDir = $targetDir . '.' . str_replace(' ', '_', microtime());
+                    $toFinish = true;
+                }
             }
         }
 
@@ -58,5 +65,18 @@ class Filesystem extends BaseFilesystem
             $this->remove($realTargetDir);
             $this->rename($targetDir, $realTargetDir);
         }
+    }
+
+    protected function backup($targetFile)
+    {
+        for ($i = 1; $i < 1000000; $i++ ) {
+            $backupFile = $targetFile . '.' . ($i < 1000 ? sprintf('%03d', $i) : $i) . '.bak';
+            if (!is_file($backupFile)) {
+                $this->rename($targetFile, $backupFile);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

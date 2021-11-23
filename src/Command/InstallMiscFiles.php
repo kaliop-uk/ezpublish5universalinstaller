@@ -20,6 +20,7 @@ class InstallMiscFiles extends Command
             ->addArgument('target-dir', InputArgument::OPTIONAL, 'The target directory for installation', getcwd())
             ->addOption('overwrite', 'o', InputOption::VALUE_NONE, 'If set, existing files colliding with symlinks will be removed before the symlink is made')
             ->addOption('relative', 'r', InputOption::VALUE_NONE, 'If set, the symlinks will use relative paths')
+            ->addOption('backup', 'b', InputOption::VALUE_NONE, 'If set, existing files colliding with symlinks will be renamed before the symlink is made')
         ;
     }
 
@@ -29,7 +30,11 @@ class InstallMiscFiles extends Command
             throw new \Exception('Can not install miscellaneous files: unknown environment!');
         }
 
+        if ($input->getOption('backup') && !$input->getOption('overwrite')) {
+            throw new \Exception("It does not make sense to use options 'backup' without 'overwrite'");
+        }
+
         $handler = new MiscFilesHandler($input->getArgument('source-dir'), $input->getArgument('target-dir'), $output);
-        $handler->install($env, $input->getOption('overwrite'), $input->getOption('relative'));
+        $handler->install($env, $input->getOption('overwrite'), $input->getOption('relative'), $input->getOption('backup'));
     }
 }

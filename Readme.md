@@ -1,7 +1,7 @@
 Kaliop eZPublish 5 installer
 ============================
 
-A package which makes deploying your installations a breeze
+A package which makes deploying your installations a breeze. Developed for eZPublish5, works with eZPlatform 1 and 2.
 
 Installation
 ------------
@@ -87,7 +87,7 @@ pending notifications and last visited pages for logged-in users.
 While it is not mandatory to do so, it is a good idea to remove this data before shipping the db to UAT/PROD.
 One of the available commands: `database:cleanup` is designed to do so.
 
-It is also a useful tool if you use full database dumps at any point in time, and want to compare then by using 'diff' or
+It is also a useful tool if you use full database dumps at any point in time, and want to compare them by using 'diff' or
 similar tools.
 
 
@@ -127,7 +127,7 @@ In order to achieve that, we have to make an http request to the web server. One
             echo 'KO';
         }
 
-2. protect access to it, so that it can only requested by the deploy scripts. Ex. Apache htaccess config
+2. protect access to it, so that it can only be requested by the deployment scripts. Ex. Apache htaccess config
 
         # Allow ONLY TRUSTED IPS to send calls to clean the OPCache
         RewriteCond %{REMOTE_ADDR} ^127\.0\.0\.1
@@ -180,7 +180,7 @@ Developers notes
     - some commands will probably need more configuration than a couple of cli switches/env vars. Where to store it?
         We can not hardcode the current environment in composer.json!
     - a1: in composer.json, "extra" section, have a top-level key, say 'ez5ui', with sub-value per environment: ez5ui.<env>.this.that
-        This is easy to do but a bit messy. Also it does not work well if we keep the dedicated-command-line-tool approach
+        This is easy to do but a bit messy. Also, it does not work well if we keep the dedicated-command-line-tool approach
     - a2: we keep the settings for the installer in a dedicated yaml file, with a known location, which depends on the
         environment. We could even use keys in the 'extra' section to define the location of the file (with a default
         value of course) to make it super flexible... (problem: the dedicated-cli-tool would not know about the extras
@@ -195,7 +195,7 @@ To Do
 * make our commands able to echo something: inject a simple logger by default (eg https://bitbucket.org/fool/echolog),
     and an appropriate one when working in composer-command mode
 
-* add a command which does a cleanup of images in var directory which do not exist any more in ezimage table
+* add a command which does a cleanup of images in var directory which do not exist anymore in ezimage table
   (same with binary files)
 
 * instead of relying on composer autoload for the yml parser, copy it inside this project

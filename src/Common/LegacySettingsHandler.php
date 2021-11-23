@@ -36,7 +36,7 @@ class LegacySettingsHandler extends Handler
         $this->setOutputInterface($outputInterface);
     }
 
-    public function install($env, $doCleanup = false, $relative = false)
+    public function install($env, $doCleanup = false, $relative = false, $doBackup = false)
     {
 
         if ($doCleanup) {
@@ -52,7 +52,7 @@ class LegacySettingsHandler extends Handler
             }
 
             foreach (glob($baseDir . '/siteaccess/*',  GLOB_ONLYDIR) as $siteaccess) {
-                $this->symLinkSettingsInDir($siteaccess, 'siteaccess', false, $relative);
+                $this->symLinkSettingsInDir($siteaccess, 'siteaccess', false, $relative, $doBackup);
             }
         }
     }
@@ -100,7 +100,7 @@ class LegacySettingsHandler extends Handler
 
             $this->writeln("Symlinking '$source' to '$target'");
 
-            $fs->atomicSymlink($source, $target, true, $doOverwrite);
+            $fs->atomicSymlink($source, $target, true, $doOverwrite, $doBackup);
         }
     }
 }
