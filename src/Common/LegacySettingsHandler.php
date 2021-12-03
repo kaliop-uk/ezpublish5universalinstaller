@@ -48,7 +48,7 @@ class LegacySettingsHandler extends Handler
             $baseDir = $this->baseDir . '/' . $env;
 
             if (is_dir($baseDir . '/override')) {
-                $this->symLinkSettingsInDir($baseDir . '/override', 'override', false, $relative);
+                $this->symLinkSettingsInDir($baseDir . '/override', 'override', false, $relative, $doBackup);
             }
 
             foreach (glob($baseDir . '/siteaccess/*',  GLOB_ONLYDIR) as $siteaccess) {
@@ -71,11 +71,12 @@ class LegacySettingsHandler extends Handler
      * @param string $type 'override' or other
      * @param bool $doOverwrite
      * @param bool $relative
+     * @param bool $doBackup
      * @throws IOException
      *
      * @todo check if this works in case the target exists and is not a symlink
      */
-    protected function symLinkSettingsInDir($dir, $type, $doOverwrite = false, $relative = false)
+    protected function symLinkSettingsInDir($dir, $type, $doOverwrite = false, $relative = false, $doBackup = false)
     {
         $fs = new Filesystem();
 
